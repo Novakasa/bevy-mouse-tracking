@@ -1,4 +1,4 @@
-use bevy::{prelude::*, window::PrimaryWindow};
+use bevy::{color::palettes::css::ORANGE, prelude::*, window::PrimaryWindow};
 
 use bevy_mouse_tracking_plugin::{
     mouse_pos::InitMouseTracking, prelude::*, MainCamera, MouseMotion, MousePos,
@@ -15,7 +15,6 @@ fn main() {
         .add_plugins((DefaultPlugins, MousePosPlugin, MouseMotionPlugin))
         .insert_resource(ClearColor(Color::BLACK))
         .add_systems(Startup, setup)
-        .add_systems(Update, bevy::window::close_on_esc)
         .add_systems(Update, run)
         .run();
 }
@@ -44,17 +43,17 @@ fn setup(
     let style = TextStyle {
         font,
         font_size: 24.0,
-        color: Color::ORANGE,
+        color: Color::from(ORANGE),
     };
     let (win_width, win_height) = (window.width(), window.height());
-    let (hud_x, hud_y) = (win_width / 2. * -1., win_height / 2.);
+    let (hud_x, hud_y) = (0.0 * win_width / -2., win_height / 2.);
     let translation = Vec3::new(hud_x, hud_y, 0.);
     let transform = Transform::from_translation(translation);
     let value = "Mouse: (-, -)".to_string();
 
     commands.spawn((
         Text2dBundle {
-            text: Text::from_section(value, style).with_alignment(TextAlignment::Left),
+            text: Text::from_section(value, style).with_justify(JustifyText::Left),
             transform,
             ..Default::default()
         },
